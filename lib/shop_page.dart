@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app_flutter/global_variables.dart';
+import 'package:shop_app_flutter/product_card.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -30,7 +32,7 @@ class _ShopPageState extends State<ShopPage> {
           children: [
             Row(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(20.0),
                   child: Text(
                     "Shoes\nCollection",
@@ -52,7 +54,6 @@ class _ShopPageState extends State<ShopPage> {
             ),
             SizedBox(
               height: 120,
-
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: filters.length,
@@ -62,7 +63,9 @@ class _ShopPageState extends State<ShopPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: GestureDetector(
                       onTap: () {
-                        selectedFilter = filter;
+                        setState(() {
+                          selectedFilter = filter;
+                        });
                       },
                       child: Chip(
                         padding: EdgeInsets.symmetric(
@@ -75,7 +78,10 @@ class _ShopPageState extends State<ShopPage> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
-                        backgroundColor: Color.fromRGBO(169, 169, 169, 0.7),
+                        backgroundColor:
+                            selectedFilter == filter
+                                ? Theme.of(context).colorScheme.primary
+                                : Color.fromRGBO(169, 169, 169, 0.7),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -84,6 +90,22 @@ class _ShopPageState extends State<ShopPage> {
                         ),
                       ),
                     ),
+                  );
+                },
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (context, index) {
+                  return ProductCard(
+                    title: products[index]['title'] as String,
+                    price: products[index]['price'] as double,
+                    image: products[index]['imageUrl'] as String,
+                    backgroundColor:
+                        index.isEven
+                            ? Color.fromRGBO(216, 240, 253, 1)
+                            : Color.fromRGBO(169, 169, 169, 0.1),
                   );
                 },
               ),
