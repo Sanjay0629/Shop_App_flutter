@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app_flutter/global_variables.dart';
 import 'package:shop_app_flutter/product_card.dart';
+import 'package:shop_app_flutter/product_details_page.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -36,7 +37,7 @@ class _ShopPageState extends State<ShopPage> {
                   padding: EdgeInsets.all(20.0),
                   child: Text(
                     "Shoes\nCollection",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
                 Expanded(
@@ -98,14 +99,27 @@ class _ShopPageState extends State<ShopPage> {
               child: ListView.builder(
                 itemCount: products.length,
                 itemBuilder: (context, index) {
-                  return ProductCard(
-                    title: products[index]['title'] as String,
-                    price: products[index]['price'] as double,
-                    image: products[index]['imageUrl'] as String,
-                    backgroundColor:
-                        index.isEven
-                            ? Color.fromRGBO(216, 240, 253, 1)
-                            : Color.fromRGBO(169, 169, 169, 0.1),
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ProductDetailsPage(
+                              products: products[index],
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: ProductCard(
+                      title: products[index]['title'] as String,
+                      price: products[index]['price'] as double,
+                      image: products[index]['imageUrl'] as String,
+                      backgroundColor:
+                          index.isEven
+                              ? Color.fromRGBO(216, 240, 253, 1)
+                              : Color.fromRGBO(169, 169, 169, 0.1),
+                    ),
                   );
                 },
               ),
